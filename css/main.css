@@ -163,12 +163,6 @@ object{
 	fill: white;
 }
 
-#moghyaSays{
-	border-top: solid white 1px;
-	font-size: 1rem;
-	margin-top: 5%
-}
-
 .details{
 	text-align: justify;
 	padding-left: 2%;

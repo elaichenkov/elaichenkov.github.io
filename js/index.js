@@ -176,42 +176,6 @@ var profile;
 // 	}
 // });
 
-
-function loadMoghysSays() {
-	const moghyaSaysInnerHtml = `<div class="col m6">
-		<h6>Recipe for this website:</h6>	
-		<div class="row">
-			Would you like to have your own portfolio in this template ? It"s pretty easy, <a href="https://github.com/moghya">moghya</a> covered it up for everyone out their. 
-			All the content on this website is dynamically loaded from JSON data.
-			Fork this <a href="https://github.com/moghya/moghya.github.io/">repo</a> on github and edit <a href="https://github.com/moghya/moghya.github.io/blob/master/js/profile.json">js/profile.json</a> for adding your data.
-			<a href="https://medium.com/howcatcancode/developer-profile-template-2017-219f43147efe">Read more</a><br>
-			If you like this website, consider giving a star to its repo <a href="https://github.com/moghya/moghya.github.io/">here</a>.
-		</div>
-	</div>
-	<div class="col m6">
-		<h6>Warm Gratitudes</h6>
-		<div class="row">
-			<div class="col m3 s3"><a href="https:https://pages.github.com/">Github Pages</a></div>
-			<div class="col m3 s3"><a href="https://stackoverflow.com/">Stack Overflow</a></div>
-			<div class="col m3 s3"><a href="https://jquery.com/">jQuery</a></div>
-			<div class="col m3 s3"><a href="http://materializecss.com/">Materialize</a></div>
-		</div>
-		<div class="row">
-			<div class="col m3 s3"><a href="https://fonts.google.com/">Google Fonts</a></div>	
-			<div class="col m3 s3"><a href="http://konpa.github.io/devicon/">Devicons</a></div>
-			<div class="col m3 s3"><a href="http://www.flaticon.com/">Flaticons</a></div>
-			<div class="col m3 s3"><a href="https://simpleicons.org/">SimpleIcons</a></div>				
-		</div>
-		<div class="row">
-			<div class="col m3 s3"><a href="http://noraesae.github.io/perfect-scrollbar/">Perfect Scrollbar</a></div>
-			<div class="col m3 s3"><a href="http://www.mattboldt.com/demos/typed-js/">TypedJs</a></div>					
-			<div class="col m3 s3"><a href="https://daneden.github.io/animate.css/">Animate.CSS</a></div>
-			<div class="col m3 s3"><a href="http://t4t5.github.io/sweetalert/">Sweetalert</a></div>
-		</div>
-	</div>`;
-	$('#moghyaSays').html(moghyaSaysInnerHtml);
-}
-
 $.get("js/profile.json", 
 	function(data, status){
 		console.log('Got profile:',data,' \nwith status:',status);
@@ -237,7 +201,6 @@ $.get("js/profile.json",
 		loadProjects(profile.projects);
 		loadWorks(profile.experince);
 		loadEducations(profile.educations);
-		loadMoghysSays();
 		console.log('body loaded calling');
 		onBodyLoad();
 });
