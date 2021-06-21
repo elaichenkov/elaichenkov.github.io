@@ -1,0 +1,8 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="512" height="512">
+	<title>stack-overflow-svg</title>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #ffffff } 
+	</style>
+	<path id="Layer" fill-rule="evenodd" class="shp0" d="M24 12C24 18.63 18.63 24 12 24C5.37 24 0 18.63 0 12C0 5.37 5.37 0 12 0C18.63 0 24 5.37 24 12ZM12.87 5.9L11.89 6.57L15.01 11.13L15.98 10.47L12.87 5.9ZM10.06 8.49L9.46 9.5L14.3 12.34L14.9 11.33L10.06 8.49ZM8.48 12.35L13.9 13.81L14.19 12.73L8.78 11.21L8.48 12.35ZM16 13L15 13L15 18L7 18L7 13L6 13L6 19L16 19L16 13ZM8.02 17L13.86 17L13.86 15.83L8.02 15.83L8.02 17ZM8.19 13.67L8.09 14.85L13.78 15.36L13.88 14.24L8.19 13.67ZM16.19 10.4L17.36 10.2L16.41 4.75L15.25 4.95L16.19 10.4Z" />
+</svg>
