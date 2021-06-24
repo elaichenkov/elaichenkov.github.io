@@ -121,7 +121,6 @@ function loadBlog() {
 }
 
 function onBodyLoad(){
-	console.log('body loaded called');
 	$('div.progress').css('display','none');
 	$('div.content').css('display','block');
 	$('.collapsible').collapsible({
@@ -134,7 +133,6 @@ function onBodyLoad(){
 function onWindowResize(){
 	const heightPageA = parseInt($('#pagea').css('height').replace('px',''),10);
 	const tabContentHeight = Math.max(heightPageA-48,(window.innerHeight - 50)) + 'px';
-	// console.log(`${document.getElementsByClassName('tabs-content carousel initialized')[0].style.height } to ${tabContentHeight}`);
 	const tabs = document.getElementsByClassName('tabs-content carousel initialized');
 	if (tabs && tabs[0]) {
 		tabs[0].style.height = tabContentHeight;
@@ -178,7 +176,6 @@ var profile;
 
 $.get("js/profile.json", 
 	function(data, status){
-		console.log('Got profile:',data,' \nwith status:',status);
 		if(status!=="success") {
 			window.location.href = "/error.html";
 		}
@@ -200,6 +197,5 @@ $.get("js/profile.json",
 		loadProjects(profile.projects);
 		loadWorks(profile.experince);
 		loadEducations(profile.educations);
-		console.log('body loaded calling');
 		onBodyLoad();
 });
