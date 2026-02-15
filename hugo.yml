@@ -1,0 +1,86 @@
+baseURL: "https://elaichenkov.github.io"
+languageCode: "en-us"
+pagination:
+  pagerSize: 5
+title: "Yevhen Laichenkov's Blog"
+theme: "PaperMod"
+
+enableRobotsTXT: true
+disableKinds: ["taxonomy", "term"]
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+
+minify:
+  disableXML: true
+  minifyOutput: true
+
+params:
+  mainSections: ["posts"]
+  env: production
+  title: Yevhen Laichenkov
+  description: Yevhen Laichenkov's Blog. Writing about testing, tools, automation, frameworks, and whatever sparks interest.
+  keywords: [Blog, Portfolio, PaperMod]
+  DateFormat: "Jan 02, 2006"
+  defaultTheme: auto
+  disableThemeToggle: false
+
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowWordCount: true
+  ShowRssButtonInSectionTermList: true
+  UseHugoToc: true
+  disableSpecial1stPost: false
+  disableScrollToTop: false
+  comments: true
+  hidemeta: false
+  hideSummary: false
+  showtoc: false
+  tocopen: false
+
+  assets:
+    # disableHLJS: true # to disable highlight.js
+    # disableFingerprinting: true
+    favicon: "favicon.ico"
+  label:
+    text: "Home"
+    iconHeight: 24
+
+  homeInfoParams:
+    Title: "Yevhen Laichenkov's Blog"
+    Content: "I share what I’ve seen, learned, and messed up in life, testing, and software."
+
+  socialIcons:
+    - name: github
+      url: "https://github.com/elaichenkov"
+    - name: linkedin
+      url: "https://linkedin.com/in/yevhen-laichenkov-3352b88a"
+    - name: stackoverflow
+      url: "https://stackoverflow.com/users/11597494/elaichenkov"
+    - name: medium
+      url: "https://elaichenkov.medium.com/"
+
+  cover:
+    hidden: true # hide everywhere but not in structured data
+    hiddenInList: true # hide on list pages and home
+    hiddenInSingle: true # hide on single page
+
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    limit: 10
+    keys: ["title", "permalink", "summary", "content"]
+pygmentsUseClasses: true
+markup:
+  highlight:
+    noClasses: false
+    anchorLineNos: true
+    lineNos: true
+    lineNumbersInTable: true

@@ -1,0 +1,84 @@
+.post-content .highlight,
+.post-content pre {
+  border: 1px solid color-mix(in srgb, var(--primary) 16%, transparent);
+  border-radius: 14px;
+  box-shadow: 0 14px 30px -26px rgba(9, 19, 39, 0.85);
+}
+
+.post-content .highlight pre,
+.post-content pre {
+  line-height: 1.55;
+}
+
+.post-content .highlight code {
+  padding-top: 14px;
+}
+
+.copy-code {
+  display: block;
+  top: 10px;
+  right: 10px;
+  border: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
+  background: color-mix(in srgb, var(--entry) 86%, transparent);
+  color: var(--primary);
+  border-radius: 999px;
+  padding: 4px 11px;
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  transition: transform .18s ease, opacity .18s ease, border-color .18s ease;
+  opacity: 0.78;
+}
+
+.copy-code:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--primary) 52%, transparent);
+}
+
+.code-collapsible {
+  position: relative;
+}
+
+.code-collapsible pre {
+  max-height: calc(var(--code-preview-lines, 14) * 1.55em + 1.6rem);
+  overflow: hidden;
+}
+
+.code-collapsible::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 72px;
+  pointer-events: none;
+  border-radius: 0 0 14px 14px;
+  background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--code-block-bg) 96%, black 4%) 74%);
+}
+
+.code-collapsible.is-expanded pre {
+  max-height: none;
+}
+
+.code-collapsible.is-expanded::after {
+  display: none;
+}
+
+.code-toggle {
+  margin: -2px 0 18px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--primary) 26%, transparent);
+  background: color-mix(in srgb, var(--code-bg) 90%, transparent);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease;
+}
+
+.code-toggle:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--primary) 52%, transparent);
+}

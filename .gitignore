@@ -1,6 +1,10 @@
-*.gem
-.bundle
-.sass-cache
-_site/
-Gemfile.lock
-**/.ruby-version
+.DS_Store
+Thumbs.db
+
+node_modules/
+public/
+resources/_gen/
+.hugo_build.lock
+
+.idea/
+.vscode/
