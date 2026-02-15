@@ -63,6 +63,12 @@ params:
     - name: medium
       url: "https://elaichenkov.medium.com/"
 
+  posthog:
+    enabled: true
+    key: "phc_z8BQQAXpczV4aNQQ9OKJhN977vZLcBQ0AUEMKhigRVk"
+    apiHost: "https://us.i.posthog.com"
+    defaults: "2026-01-30"
+
   cover:
     hidden: true # hide everywhere but not in structured data
     hiddenInList: true # hide on list pages and home
