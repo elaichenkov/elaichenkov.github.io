@@ -16,7 +16,7 @@ minify:
   minifyOutput: true
 
 params:
-  mainSections: ["posts"]
+  mainSections: []
   env: production
   title: Yevhen Laichenkov
   description: Yevhen Laichenkov's Blog. Writing about testing, tools, automation, frameworks, and whatever sparks interest.
