@@ -389,14 +389,20 @@ test.describe.serial('checkout flow', () => {
 ```ts
 // ✅ Better
 test('complete checkout flow', async ({ page }) => {
-  await page.goto('/products');
-  await page.getByRole('button', { name: 'Add to cart' }).click();
+  test.step('add item to cart', async () => {
+    await page.goto('/products');
+    await page.getByRole('button', { name: 'Add to cart' }).click();
+  });
 
-  await page.goto('/cart');
-  await page.getByRole('button', { name: 'Checkout' }).click();
+  test.step('go to checkout', async () => {
+    await page.goto('/cart');
+    await page.getByRole('button', { name: 'Checkout' }).click();
+  });
 
-  await page.getByRole('button', { name: 'Confirm' }).click();
-  await expect(page.getByText('Order placed')).toBeVisible();
+  test.step('confirm order', async () => {
+    await page.getByRole('button', { name: 'Confirm' }).click();
+    await expect(page.getByText('Order placed')).toBeVisible();
+  });
 });
 ```
 
