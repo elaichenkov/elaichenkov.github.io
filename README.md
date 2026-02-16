@@ -1,6 +1,8 @@
 # Yevhen Laichenkov's Blog
 
-Personal blog built with [Astro](https://astro.build/) using the AstroPaper architecture.
+Personal blog built with [Astro](https://astro.build/).
+
+Based on [AstroPaper](https://github.com/satnaing/astro-paper) by Sat Naing (MIT license).
 
 ## Development
 

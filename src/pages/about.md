@@ -3,6 +3,4 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
-I am Yevhen Laichenkov. I write about testing, automation, tooling, and the trade-offs behind reliable delivery.
-
-Most posts here come from real work: what failed, what worked, and what changed after shipping.
+I'm a Senior SDET who loves building tools that make engineers' lives easier. Beyond my work, I'm an active open-source contributor and a mentor for aspiring automation engineers. Outside of tech, football is a big part of my life, both playing and following it.
