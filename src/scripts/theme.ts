@@ -1,9 +1,7 @@
 // Constants
 const THEME = "theme";
-const PALETTE = "palette";
 const LIGHT = "light";
 const DARK = "dark";
-const DEFAULT_PALETTE = "fjord";
 
 // Initial color scheme
 // Can be "light", "dark", or empty string for system's prefers-color-scheme
@@ -23,30 +21,18 @@ function getPreferTheme(): string {
     : LIGHT;
 }
 
-function getPreferPalette(): string {
-  const currentPalette = localStorage.getItem(PALETTE);
-  return currentPalette || window.theme?.paletteValue || DEFAULT_PALETTE;
-}
-
 // Use existing theme value from inline script if available, otherwise detect
 let themeValue = window.theme?.themeValue ?? getPreferTheme();
-let paletteValue = window.theme?.paletteValue ?? getPreferPalette();
 
 function setPreference(): void {
   localStorage.setItem(THEME, themeValue);
-  localStorage.setItem(PALETTE, paletteValue);
   reflectPreference();
 }
 
 function reflectPreference(): void {
   document.firstElementChild?.setAttribute("data-theme", themeValue);
-  document.firstElementChild?.setAttribute("data-palette", paletteValue);
 
   document.querySelector("#theme-btn")?.setAttribute("aria-label", themeValue);
-  const paletteSelect = document.querySelector(
-    "#palette-select"
-  ) as HTMLSelectElement | null;
-  if (paletteSelect) paletteSelect.value = paletteValue;
 
   // Get a reference to the body element
   const body = document.body;
@@ -73,16 +59,11 @@ if (window.theme) {
 } else {
   window.theme = {
     themeValue,
-    paletteValue,
     setPreference,
     reflectPreference,
     getTheme: () => themeValue,
     setTheme: (val: string) => {
       themeValue = val;
-    },
-    getPalette: () => paletteValue,
-    setPalette: (val: string) => {
-      paletteValue = val;
     },
   };
 }
@@ -107,22 +88,8 @@ function setThemeFeature(): void {
   }
 }
 
-function setPaletteFeature(): void {
-  const paletteSelect = document.querySelector(
-    "#palette-select"
-  ) as HTMLSelectElement | null;
-  if (paletteSelect) {
-    paletteSelect.onchange = () => {
-      paletteValue = paletteSelect.value;
-      window.theme?.setPalette(paletteValue);
-      setPreference();
-    };
-  }
-}
-
 function setupThemeControls(): void {
   setThemeFeature();
-  setPaletteFeature();
 }
 
 // Set up theme features after page load

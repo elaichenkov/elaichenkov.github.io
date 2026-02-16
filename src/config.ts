@@ -17,14 +17,6 @@ export const SITE = {
     url: "https://github.com/elaichenkov/elaichenkov.github.io/edit/main/",
   },
   dynamicOgImage: true,
-  palette: {
-    default: "fjord",
-    options: [
-      { value: "fjord", label: "Fjord" },
-      { value: "dawn", label: "Dawn" },
-      { value: "forest", label: "Forest" },
-    ],
-  },
   posthog: {
     enabled: true,
     key: "phc_z8BQQAXpczV4aNQQ9OKJhN977vZLcBQ0AUEMKhigRVk",

@@ -28,7 +28,10 @@
     }
 
     a {
-      @apply wrap-break-word text-foreground decoration-dashed underline-offset-4 hover:text-accent focus-visible:no-underline;
+      @apply wrap-break-word text-accent decoration-dashed underline-offset-4 transition-colors duration-150 focus-visible:no-underline;
+      &:hover {
+        color: color-mix(in oklab, var(--accent) 82%, var(--foreground) 18%);
+      }
     }
 
     ul {

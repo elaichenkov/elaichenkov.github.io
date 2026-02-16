@@ -4,61 +4,27 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 :root {
-  --background: #f8f6f1;
-  --foreground: #1f2933;
-  --accent: #0d9488;
-  --muted: #e8efe9;
-  --border: #d9e4dc;
-}
-
-html[data-theme="light"][data-palette="fjord"],
-html[data-theme="light"]:not([data-palette]) {
-  --background: #f8f6f1;
-  --foreground: #1f2933;
-  --accent: #0d9488;
-  --muted: #e8efe9;
-  --border: #d9e4dc;
-}
-
-html[data-theme="dark"][data-palette="fjord"],
-html[data-theme="dark"]:not([data-palette]) {
-  --background: #0e1625;
-  --foreground: #e6edf5;
-  --accent: #f97316;
-  --muted: #1d2a40;
-  --border: #31445d;
-}
-
-html[data-theme="light"][data-palette="dawn"] {
-  --background: #fff7ed;
+  --background: #fcfcfd;
   --foreground: #1f2937;
-  --accent: #f43f5e;
-  --muted: #ffe4d6;
-  --border: #fecdd3;
+  --accent: #0f766e;
+  --muted: #f2f4f7;
+  --border: #e5e7eb;
 }
 
-html[data-theme="dark"][data-palette="dawn"] {
-  --background: #1c1917;
-  --foreground: #ffe8d6;
-  --accent: #fb7185;
-  --muted: #3a2e2a;
-  --border: #6b4f4f;
+html[data-theme="light"] {
+  --background: #fcfcfd;
+  --foreground: #1f2937;
+  --accent: #991b1b;
+  --muted: #f2f4f7;
+  --border: #e5e7eb;
 }
 
-html[data-theme="light"][data-palette="forest"] {
-  --background: #f3f8f3;
-  --foreground: #1f2a24;
-  --accent: #15803d;
-  --muted: #deeee2;
-  --border: #c9e0cf;
-}
-
-html[data-theme="dark"][data-palette="forest"] {
-  --background: #0f1f17;
-  --foreground: #e8f3eb;
-  --accent: #34d399;
-  --muted: #1f3a2c;
-  --border: #35614b;
+html[data-theme="dark"] {
+  --background: #111827;
+  --foreground: #e5e7eb;
+  --accent: #fca5a5;
+  --muted: #1f2937;
+  --border: #334155;
 }
 
 @theme inline {
@@ -81,10 +47,6 @@ html[data-theme="dark"][data-palette="forest"] {
   }
   body {
     @apply flex min-h-svh flex-col bg-background font-app text-foreground selection:bg-accent/75 selection:text-background;
-    background-image:
-      radial-gradient(circle at 15% -5%, color-mix(in oklab, var(--accent) 18%, transparent), transparent 35%),
-      radial-gradient(circle at 85% 0%, color-mix(in oklab, var(--muted) 85%, transparent), transparent 30%);
-    background-attachment: fixed;
   }
   a,
   button {
@@ -105,7 +67,7 @@ html[data-theme="dark"][data-palette="forest"] {
 }
 
 .active-nav {
-  @apply underline decoration-solid decoration-2 underline-offset-8;
+  @apply text-accent font-semibold underline decoration-solid decoration-2 underline-offset-8;
 }
 
 #top-nav-wrap {
