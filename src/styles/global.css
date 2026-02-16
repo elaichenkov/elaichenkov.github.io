@@ -67,7 +67,44 @@ html[data-theme="dark"] {
 }
 
 .active-nav {
-  @apply text-accent font-semibold underline decoration-solid decoration-2 underline-offset-8;
+  @apply text-accent font-semibold;
+}
+
+.accent-underline {
+  position: relative;
+  text-decoration: none;
+  transition: color 0.16s ease;
+}
+
+.accent-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.08em;
+  width: 100%;
+  height: 0.52em;
+  pointer-events: none;
+  background: color-mix(in oklab, var(--accent) 42%, transparent);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14' preserveAspectRatio='none'%3E%3Cpath d='M1 8 Q6 2 11 8 T21 8 T31 8 T41 8 T51 8 T61 8 T71 8 T81 8 T91 8 T101 8 T111 8' fill='none' stroke='black' stroke-width='3.2' stroke-linecap='round'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14' preserveAspectRatio='none'%3E%3Cpath d='M1 8 Q6 2 11 8 T21 8 T31 8 T41 8 T51 8 T61 8 T71 8 T81 8 T91 8 T101 8 T111 8' fill='none' stroke='black' stroke-width='3.2' stroke-linecap='round'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  transform: scaleX(0) skewX(-10deg);
+  transform-origin: left center;
+  transition: transform 0.24s ease;
+}
+
+.accent-underline:hover,
+.accent-underline:focus-visible {
+  color: color-mix(in oklab, var(--accent) 82%, var(--foreground) 18%);
+}
+
+.accent-underline:hover::after,
+.accent-underline:focus-visible::after,
+.active-nav::after {
+  transform: scaleX(1);
 }
 
 #top-nav-wrap {

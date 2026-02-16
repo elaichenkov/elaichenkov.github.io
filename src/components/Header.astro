@@ -71,17 +71,26 @@ const isActive = (path: string) => {
         ]}
       >
         <li class="col-span-2">
-          <a href="/posts" class:list={{ "active-nav": isActive("/posts") }}>
+          <a
+            href="/posts"
+            class:list={["accent-underline", { "active-nav": isActive("/posts") }]}
+          >
             Posts
           </a>
         </li>
         <li class="col-span-2">
-          <a href="/tags" class:list={{ "active-nav": isActive("/tags") }}>
+          <a
+            href="/tags"
+            class:list={["accent-underline", { "active-nav": isActive("/tags") }]}
+          >
             Tags
           </a>
         </li>
         <li class="col-span-2">
-          <a href="/about" class:list={{ "active-nav": isActive("/about") }}>
+          <a
+            href="/about"
+            class:list={["accent-underline", { "active-nav": isActive("/about") }]}
+          >
             About
           </a>
         </li>
