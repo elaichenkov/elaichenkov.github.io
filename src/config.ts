@@ -3,7 +3,7 @@ export const SITE = {
   author: "Yevhen Laichenkov",
   profile: "https://github.com/elaichenkov",
   desc: "I share what I've seen, learned, and messed up in life, testing, and software.",
-  title: "Yevhen's Blog",
+  title: "Yevhen Laichenkov",
   ogImage: "",
   lightAndDarkMode: true,
   postPerIndex: 4,
