@@ -59,7 +59,7 @@ test('should open dashboard page and verify text', async ({ page }) => {
 
 A test without assertions is not really a test, it's just a script that performs actions without verifying any outcomes. Always make sure to include assertions in your tests to validate that the application is behaving as expected.
 
-## 2. One-shot checks `.toBe` vs web-first assertions `.toBeVisible`, `.toHaveText`, etc.
+## 2. Using one-shot checks instead of web-first assertions
 
 ```ts
 // ❌ Bad
@@ -81,7 +81,7 @@ await expect(page.getByRole('button', { name: 'Submit' })).toBeEnabled();
 
 Web-first assertions retry until timeout. One-shot checks pass/fail based on timing luck. If you see `isVisible`, `textContent` with a pair of `toBe` assertions in your tests, it's a red flag that the test might be flaky and should be refactored to use web-first assertions instead.
 
-## 3. Avoid using hardcoded timeouts with `waitForTimeout`
+## 3. Using hardcoded timeouts with `waitForTimeout`
 
 ```ts
 // ❌ Bad
@@ -98,7 +98,7 @@ await expect(page.getByRole('heading', { name: 'Welcome back' })).toBeVisible();
 
 But the page needs a moment to stabilize! Sure, but `waitForTimeout(5000)` doesn't actually check whether the page has stabilized. It just waits blindly and hopes. A web-first assertion like `.toBeVisible()` keeps checking until the element is truly there, which is both faster on a quick machine and safer on a slow one.
 
-## 4. Avoid using `networkidle`
+## 4. Relying on `networkidle`
 
 ```ts
 // ❌ Bad
@@ -130,7 +130,7 @@ await page.getByRole('button', { name: 'Submit' }).click();
 
 Almost all actions (e.g. `click`, `fill`, `check`, and many others) already wait for [actionability](https://playwright.dev/docs/actionability) and will automatically retry until the element is ready, not just visible. It's not harmful and will not cause flakiness, but it adds unnecessary code. If you find this pattern in your codebase, just remove the extra wait and let Playwright do its job.
 
-## 6. Avoid overusing `{ force: true }`
+## 6. Overusing `{ force: true }`
 
 ```ts
 // ❌ Bad
@@ -146,7 +146,7 @@ await page.locator('.email-input').fill('example@example.com');
 
 If users cannot click it, your test should not force it either. Using `{ force: true }` can hide real issues with the page, such as elements being covered by others, not being visible, or not being enabled. Fix the test flow to match real user behavior — for example, close an overlay before clicking the button behind it — instead of forcing the interaction.
 
-## 7. Incorrect ordering of `waitForResponse` and the triggering action
+## 7. Ordering `waitForResponse` incorrectly
 
 ```ts
 // ❌ Bad
@@ -174,7 +174,7 @@ await responsePromise;
 
 I know, I know many people are scared of missing an await, but this is one place where that habit backfires. You need to set up the listener first (no await), trigger the action second, then await the response third.
 
-## 8. Avoid writing custom retry loops instead of using `toPass` or `expect.poll`
+## 8. Writing custom retry loops instead of using `toPass` or `expect.poll`
 
 ```ts
 // ❌ Bad
@@ -237,7 +237,7 @@ await expect(async () => {
 
 When using `toPass`, it's important to set short timeouts for the inner assertions. Otherwise, if the inner assertion has a long default timeout (e.g. 30 seconds), it can cause the test to wait unnecessarily long before retrying, which can make the test suite slower and less responsive to failures. Setting a short timeout for the inner assertion allows `toPass` to retry more quickly and fail faster when the condition is not met.
 
-## 10. Avoid using deprecated APIs and options
+## 10. Using deprecated APIs and options
 
 ```ts
 // ❌ Bad
@@ -255,7 +255,7 @@ await page.waitForURL('**/profile');
 
 `waitForNavigation` is deprecated because it can miss navigations triggered by non-click actions (e.g. `window.location` changes) and it doesn't work well with single-page applications. Use `waitForURL` or web-first assertions instead to wait for the expected state after the action.
 
-## 11. Strict locators with `{ exact: true }`
+## 11. Not using `{ exact: true }` for some locators
 
 ```ts
 // ❌ Bad
@@ -271,7 +271,7 @@ await page.getByText('Submit', { exact: true }).click();
 
 Without `{ exact: true }`, locators use substring matching — so `getByText('Submit')` also matches "Submit Order" or "Submitting...". If a new element with similar text appears on the page, your locator suddenly matches multiple elements and Playwright throws a strict-mode violation. By adding `{ exact: true }`, you ensure the locator matches only the exact text you expect, which prevents surprise failures when the page content evolves.
 
-## 12. Avoid using `expect.poll` for simple DOM checks
+## 12. Using `expect.poll` for simple DOM checks
 
 ```ts
 // ❌ Bad
@@ -285,7 +285,7 @@ await expect(page.getByTestId('counter')).toHaveText('10');
 
 `expect.poll` is useful for polling, and yeah, you can still use it for DOM elements, but only when it's necessary. In most cases, web-first assertions like `toHaveText`, `toBeVisible`, etc. are more concise and reliable. If you see `expect.poll` being used to check DOM state that can be done with web-first assertions, consider refactoring it to use web-first assertions instead.
 
-## 13. Avoid using `waitForFunction` for simple UI assertions
+## 13. Using `waitForFunction` for simple UI assertions
 
 ```ts
 // ❌ Bad
@@ -301,7 +301,7 @@ await expect(page.locator('.status')).toHaveText('Ready');
 
 `waitForFunction` is a powerful tool for waiting on complex conditions, but it's often overused for simple UI assertions that can be expressed with web-first assertions. If you see `waitForFunction` in your tests, check if it can be refactored to use `expect` and locators instead for better readability and reliability.
 
-## 14. Using `.not` negative assertions when a positive one is available
+## 14. Preferring `.not` negative assertions over positive ones
 
 ```ts
 // ❌ Bad
