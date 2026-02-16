@@ -44,7 +44,7 @@ Let's dive into each of these anti-patterns and how to fix them.
 // ❌ Bad
 test('should open the page', async ({ page }) => {
   await page.goto('/dashboard');
-  // assuming that if the goto mehtod doesn't throw, the page is open, but we don't actually check anything visible to users
+  // assuming that if the goto mehtod doesn't throw, the page is open, but we don't actually check anything
 });
 ```
 
