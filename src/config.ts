@@ -17,6 +17,12 @@ export const SITE = {
     url: "https://github.com/elaichenkov/elaichenkov.github.io/edit/main/",
   },
   dynamicOgImage: true,
+  posthog: {
+    enabled: true,
+    key: "phc_z8BQQAXpczV4aNQQ9OKJhN977vZLcBQ0AUEMKhigRVk",
+    apiHost: "https://us.i.posthog.com",
+    defaults: "2026-01-30",
+  },
   dir: "ltr", // "rtl" | "auto"
   lang: "en", // html lang code. Set this empty and default will be "en"
   timezone: "UTC", // Default global timezone (IANA format) https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
