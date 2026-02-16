@@ -85,7 +85,10 @@ const isActive = (path: string) => {
         <li class="col-span-2">
           <a
             href="/posts"
-            class:list={["accent-underline", { "active-nav": isActive("/posts") }]}
+            class:list={[
+              "accent-underline",
+              { "active-nav": isActive("/posts") },
+            ]}
           >
             Posts
           </a>
@@ -93,7 +96,10 @@ const isActive = (path: string) => {
         <li class="col-span-2">
           <a
             href="/tags/til"
-            class:list={["accent-underline", { "active-nav": isActive("/tags/til") }]}
+            class:list={[
+              "accent-underline",
+              { "active-nav": isActive("/tags/til") },
+            ]}
           >
             TIL
           </a>
@@ -101,7 +107,10 @@ const isActive = (path: string) => {
         <li class="col-span-2">
           <a
             href="/tags"
-            class:list={["accent-underline", { "active-nav": isActive("/tags") }]}
+            class:list={[
+              "accent-underline",
+              { "active-nav": isActive("/tags") },
+            ]}
           >
             Tags
           </a>
@@ -109,7 +118,10 @@ const isActive = (path: string) => {
         <li class="col-span-2">
           <a
             href="/about"
-            class:list={["accent-underline", { "active-nav": isActive("/about") }]}
+            class:list={[
+              "accent-underline",
+              { "active-nav": isActive("/about") },
+            ]}
           >
             About
           </a>
