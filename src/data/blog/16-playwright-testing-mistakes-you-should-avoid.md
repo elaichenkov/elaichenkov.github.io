@@ -269,7 +269,7 @@ await page.getByText('Submit', { exact: true }).click();
 
 It's really important to make locators strict even if you think that there is only one element that matches. If there are multiple elements that match the locator, Playwright will throw an error and fail the test. This can lead to flakiness if the page structure changes or if there are dynamic elements that can appear or disappear. By adding `{ exact: true }`, you ensure that the locator matches exactly what you expect and reduces the chances of flakiness due to ambiguous locators.
 
-## 12. Avoid using `expect.poll` for DOM checks
+## 12. Avoid using `expect.poll` for simple DOM checks
 
 ```ts
 // ❌ Bad
