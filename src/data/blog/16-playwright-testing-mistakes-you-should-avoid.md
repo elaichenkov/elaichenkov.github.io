@@ -1,9 +1,9 @@
 ---
-title: 13 Playwright Testing Mistakes You Should Avoid
-description: A practical guide to 13 Playwright mistakes that cause flaky, slow, and hard-to-maintain tests.
+title: 16 Playwright Testing Mistakes You Should Avoid
+description: A practical guide to 16 Playwright mistakes that cause flaky, slow, and hard-to-maintain tests.
 author: Yevhen Laichenkov
 pubDatetime: 2026-02-14T10:00:00-05:00
-slug: 13-playwright-testing-mistakes-you-should-avoid
+slug: 16-playwright-testing-mistakes-you-should-avoid
 featured: true
 draft: false
 tags:
@@ -12,7 +12,7 @@ tags:
   - Automation
 ---
 
-I keep seeing the same pattern: tests start flaking and the blame goes to data, CI, browsers, or infrastructure. Then the test gets 'fixed' with sleeps, forced actions that skip [actionability checks](https://playwright.dev/docs/actionability), and custom retry or wait helpers that reimplement what Playwright already provides. Sometimes deprecated APIs even make it into fresh code, which guarantees maintenance trouble later. In this article, I go through the most common mistakes I see in projects.
+I keep seeing the same pattern: tests start flaking and the blame goes to data, CI, browsers, or infrastructure. Then the test gets "fixed" with sleeps, forced actions that skip [actionability checks](https://playwright.dev/docs/actionability), and custom retry or wait helpers that reimplement what Playwright already provides. Sometimes deprecated APIs even make it into fresh code, which guarantees maintenance trouble later. In this article, I go through the most common mistakes I see in projects.
 
 <details>
 <summary>TL;DR</summary>
@@ -77,7 +77,7 @@ await expect(page.locator('li')).toHaveCount(5);
 await expect(page.getByRole('button', { name: 'Submit' })).toBeEnabled();
 ```
 
-Web-first assertions retry until timeout. One-shot checks pass/fail based on timing luck. If you see `isVisible`, `textContent` with pair of `toBe` assertions in your tests it's a red flag that the test might be flaky and should be refactored to use web-first assertions instead.
+Web-first assertions retry until timeout. One-shot checks pass/fail based on timing luck. If you see `isVisible`, `textContent` with a pair of `toBe` assertions in your tests, it's a red flag that the test might be flaky and should be refactored to use web-first assertions instead.
 
 ## 3. Avoid using hardcoded timeouts with `waitForTimeout`
 
@@ -126,7 +126,7 @@ await page.getByRole('button', { name: 'Submit' }).click();
 await page.getByRole('button', { name: 'Submit' }).click();
 ```
 
-Almost all actions (e.g `click`, `fill`, `check` and many other) already wait for [actionability](https://playwright.dev/docs/actionability) and it will automatically retry until the element is ready not just visible. Yeah, it's not harmful and will not cause flakiness but it adds unnecessary code and slows down the suite. If you find this pattern in your codebase, just remove the extra wait and let Playwright do its job.
+Almost all actions (e.g. `click`, `fill`, `check`, and many others) already wait for [actionability](https://playwright.dev/docs/actionability) and will automatically retry until the element is ready, not just visible. It's not harmful and will not cause flakiness, but it adds unnecessary code. If you find this pattern in your codebase, just remove the extra wait and let Playwright do its job.
 
 ## 6. Avoid overusing `{ force: true }`
 
@@ -142,7 +142,7 @@ await page.getByRole('button', { name: 'Delete' }).click();
 await page.locator('.email-input').fill('example@example.com');
 ```
 
-If users cannot click it, your test should not force it either. Using `{ force: true }` can hide real issues with the page, such as elements being covered by others, not being visible, or not being enabled. If you find `{ force: true }` in your tests, check if it's really necessary or if it can be removed to make the test more reliable and closer to real user interactions.
+If users cannot click it, your test should not force it either. Using `{ force: true }` can hide real issues with the page, such as elements being covered by others, not being visible, or not being enabled. Fix the test flow to match real user behavior — for example, close an overlay before clicking the button behind it — instead of forcing the interaction.
 
 ## 7. Incorrect ordering of `waitForResponse` and the triggering action
 
@@ -151,7 +151,7 @@ If users cannot click it, your test should not force it either. Using `{ force: 
 await page.waitForResponse((r) => r.url().includes('/api/data'));
 await page.getByRole('button', { name: 'Load' }).click();
 
-// also bad
+// also bad — response may arrive before the listener is set up (race condition)
 await page.getByRole('button', { name: 'Load' }).click();
 await page.waitForResponse((r) => r.url().includes('/api/data'));
 ```
@@ -195,23 +195,23 @@ while (retries > 0) {
 
 // Using `toPass`
 await expect(async () => {
-  const state = await page.getByTestId('total').textContent({ timeout: 1_000 }); // Short timeout for the inner assertion
+  const state = await page.getByTestId('total').textContent();
   const value = parseInt(state || '0', 10);
   expect(value).toBe(100);
-}).toPass({ timeout: 30_000, interval: [500, 1_000] });
+}).toPass({ timeout: 30_000, intervals: [500, 1_000] });
 
 // Using `expect.poll`
 await expect.poll(async () => {
-  const state = await page.getByTestId('total').textContent({ timeout: 1_000 }); // Short timeout for the inner assertion
+  const state = await page.getByTestId('total').textContent();
   const value = parseInt(state || '0', 10);
 
   return value;
-}).toBe(100, { timeout: 30_000, interval: [500, 1_000] });
+}, { timeout: 30_000, intervals: [500, 1_000] }).toBe(100);
 ```
 
 `toPass` and `expect.poll` are safer and easier to reason about than custom retry loops. They handle timing, retries, and timeouts in a consistent way, and they integrate well with Playwright's built-in waiting mechanisms. If you see custom retry loops in your tests, consider refactoring them to use `toPass` or `expect.poll` for better reliability and readability.
 
-## 9. Short inner timeouts inside `toPass` and `expect.poll`
+## 9. Forgetting short inner timeouts inside `toPass`
 
 ```ts
 // ❌ Bad
@@ -267,7 +267,7 @@ await page.getByRole('button', { name: 'Submit', exact: true }).click();
 await page.getByText('Submit', { exact: true }).click();
 ```
 
-It's really important to make locators strict even if you think that there is only one element that matches. If there are multiple elements that match the locator, Playwright will throw an error and fail the test. This can lead to flakiness if the page structure changes or if there are dynamic elements that can appear or disappear. By adding `{ exact: true }`, you ensure that the locator matches exactly what you expect and reduces the chances of flakiness due to ambiguous locators.
+Without `{ exact: true }`, locators use substring matching — so `getByText('Submit')` also matches "Submit Order" or "Submitting...". If a new element with similar text appears on the page, your locator suddenly matches multiple elements and Playwright throws a strict-mode violation. By adding `{ exact: true }`, you ensure the locator matches only the exact text you expect, which prevents surprise failures when the page content evolves.
 
 ## 12. Avoid using `expect.poll` for simple DOM checks
 
@@ -281,14 +281,14 @@ await expect.poll(() => page.getByTestId('counter').textContent()).toBe('10');
 await expect(page.getByTestId('counter')).toHaveText('10');
 ```
 
-`expect.poll` is useful for polling, yeah you still can use it for DOM elements but only when it's necessary. In most cases web-first assertions like `toHaveText`, `toBeVisible`, etc. are more concise and reliable. If you see `expect.poll` being used to check DOM state that can be done with web-first assertions, consider refactoring it to use web-first assertions instead.
+`expect.poll` is useful for polling, and yeah, you can still use it for DOM elements, but only when it's necessary. In most cases, web-first assertions like `toHaveText`, `toBeVisible`, etc. are more concise and reliable. If you see `expect.poll` being used to check DOM state that can be done with web-first assertions, consider refactoring it to use web-first assertions instead.
 
 ## 13. Avoid using `waitForFunction` for simple UI assertions
 
 ```ts
 // ❌ Bad
 await page.waitForFunction(
-  (selector) => document.querySelector('.status')?.textContent === 'Ready',
+  () => document.querySelector('.status')?.textContent === 'Ready',
 );
 ```
 
@@ -311,7 +311,7 @@ await expect(page.getByRole('button', { name: 'Submit' })).not.toBeVisible();
 await expect(page.getByRole('button', { name: 'Submit' })).toBeHidden();
 ```
 
-Using `.not` can make test less readable and can lead to confusion. If there is a positive assertion available (like `toBeHidden`), it's usually clearer to use it instead of negating a positive assertion.
+Using `.not` can make tests less readable and can lead to confusion. If there is a positive assertion available (like `toBeHidden`), it's usually clearer to use it instead of negating a positive assertion. Note that `toBeHidden` and `not.toBeVisible` have [slightly different semantics](https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-be-hidden) — `toBeHidden` also passes for elements that don't exist in the DOM, while `not.toBeVisible` requires the element to exist but not be visible. Pick the one that matches your intent.
 
 ## 15. Ignoring `eslint-plugin-playwright`
 
@@ -362,6 +362,6 @@ Well, it's not a mistake tbh, but returning new page objects from action methods
 
 ## Final thoughts
 
-Good Playwright tests are usually the simple ones.
+Good Playwright tests are usually simple.
 Assert what users see, trust built-in waiting, and avoid custom timing hacks.
 Do that consistently, and your tests get faster, more stable, and easier to maintain. Thank you for reading, and happy testing!
