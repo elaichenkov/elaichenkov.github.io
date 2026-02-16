@@ -1,0 +1,34 @@
+---
+import { SITE } from "@/config";
+---
+
+{
+  SITE.comments.enabled && (
+    <section class="mt-10" aria-label="Comments">
+      <div id="comments-root" />
+      <script
+        is:inline
+        define:vars={{
+          repo: SITE.comments.repo,
+          issueTerm: SITE.comments.issueTerm,
+          label: SITE.comments.label,
+          theme: SITE.comments.theme,
+        }}
+      >
+        (() => {
+          const root = document.querySelector("#comments-root");
+          if (!root || root.querySelector("script")) return;
+          const script = document.createElement("script");
+          script.src = "https://utteranc.es/client.js";
+          script.async = true;
+          script.setAttribute("repo", repo);
+          script.setAttribute("issue-term", issueTerm);
+          script.setAttribute("label", label);
+          script.setAttribute("theme", theme);
+          script.setAttribute("crossorigin", "anonymous");
+          root.appendChild(script);
+        })();
+      </script>
+    </section>
+  )
+}

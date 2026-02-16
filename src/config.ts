@@ -16,6 +16,13 @@ export const SITE = {
     text: "Suggest an edit",
     url: "https://github.com/elaichenkov/elaichenkov.github.io/edit/main/",
   },
+  comments: {
+    enabled: true,
+    repo: "elaichenkov/elaichenkov.github.io",
+    issueTerm: "pathname",
+    label: "comment",
+    theme: "preferred-color-scheme",
+  },
   dynamicOgImage: true,
   posthog: {
     enabled: true,

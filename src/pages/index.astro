@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import Socials from "@/components/Socials.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import Card from "@/components/Card.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
@@ -42,6 +43,9 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       <p>
         Writing about code, quality, and open source.
       </p>
+      <div class="mt-3">
+        <Socials />
+      </div>
     </section>
 
     {

@@ -29,6 +29,18 @@ export const SOCIALS: Social[] = [
     linkTitle: `${SITE.title} on LinkedIn`,
     icon: IconLinkedin,
   },
+  {
+    name: "X",
+    href: "https://x.com/elaichenkov",
+    linkTitle: `${SITE.title} on X`,
+    icon: IconBrandX,
+  },
+  {
+    name: "Mail",
+    href: "mailto:elaichenkov@gmail.com",
+    linkTitle: `Send an email to ${SITE.title}`,
+    icon: IconMail,
+  },
 ] as const;
 
 export const SHARE_LINKS: Social[] = [
