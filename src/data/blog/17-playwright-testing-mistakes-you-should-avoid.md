@@ -1,9 +1,9 @@
 ---
-title: 16 Playwright Testing Mistakes You Should Avoid
-description: A practical guide to 16 Playwright mistakes that cause flaky, slow, and hard-to-maintain tests.
+title: 17 Playwright Testing Mistakes You Should Avoid
+description: A practical guide to 17 Playwright mistakes that cause flaky, slow, and hard-to-maintain tests.
 author: Yevhen Laichenkov
 pubDatetime: 2026-02-14T10:00:00-05:00
-slug: 16-playwright-testing-mistakes-you-should-avoid
+slug: 17-playwright-testing-mistakes-you-should-avoid
 featured: true
 draft: false
 tags:
@@ -33,6 +33,7 @@ I keep seeing the same pattern: tests start flaking and the blame goes to data, 
 14. Prefer positive assertions `toBeHidden` over negative ones `not.toBeVisible` when possible
 15. Add [`eslint-plugin-playwright`](https://github.com/playwright-community/eslint-plugin-playwright) and catch bad patterns before they make it into your codebase
 16. Keep page-object actions simple. Avoid returning new page objects from every action
+17. Don't make tests depend on each other with `test.describe.serial`
 
 </details>
 
@@ -360,6 +361,46 @@ async login(user: string, pass: string): Promise<void> {
 ```
 
 Well, it's not a mistake tbh, but returning new page objects from action methods can lead to unnecessary complexity and maintenance overhead. It can create tight coupling between page objects and make it harder to reuse them across different tests. Instead, let the test itself decide which page object to use after the action is performed, based on the expected state of the application.
+
+## 17. Making tests dependent on each other with `test.describe.serial`
+
+```ts
+// ❌ Bad
+test.describe.serial('checkout flow', () => {
+  test('step 1: add item to cart', async ({ page }) => {
+    await page.goto('/products');
+    await page.getByRole('button', { name: 'Add to cart' }).click();
+  });
+
+  test('step 2: go to checkout', async ({ page }) => {
+    // Depends on step 1 having run — if step 1 fails, this fails too
+    await page.goto('/cart');
+    await page.getByRole('button', { name: 'Checkout' }).click();
+  });
+
+  test('step 3: confirm order', async ({ page }) => {
+    // Depends on step 2 — the whole chain is fragile
+    await page.getByRole('button', { name: 'Confirm' }).click();
+    await expect(page.getByText('Order placed')).toBeVisible();
+  });
+});
+```
+
+```ts
+// ✅ Better
+test('complete checkout flow', async ({ page }) => {
+  await page.goto('/products');
+  await page.getByRole('button', { name: 'Add to cart' }).click();
+
+  await page.goto('/cart');
+  await page.getByRole('button', { name: 'Checkout' }).click();
+
+  await page.getByRole('button', { name: 'Confirm' }).click();
+  await expect(page.getByText('Order placed')).toBeVisible();
+});
+```
+
+`test.describe.serial` forces tests to run in order and makes every test depend on the previous one succeeding. If test 1 fails, tests 2 and 3 are skipped so you lose feedback on whether those parts of the app actually work. Each test should be independent: set up its own state and not rely on side effects from other tests. If you need to test a multi-step flow, put the whole flow in a single test and use `.step`.
 
 ## Final thoughts
 
