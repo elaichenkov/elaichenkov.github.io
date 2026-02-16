@@ -240,7 +240,7 @@ When using `toPass`, it's important to set short timeouts for the inner assertio
 ```ts
 // ❌ Bad
 await Promise.all([
-  page.waitForNavigation(),
+  page.waitForNavigation(), // Waiting for navigation after clicking a link
   page.getByRole('link', { name: 'Profile' }).click(),
 ]);
 ```
