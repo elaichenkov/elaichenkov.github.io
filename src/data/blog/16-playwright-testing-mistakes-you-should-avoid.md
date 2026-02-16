@@ -362,11 +362,6 @@ Well, it's not a mistake tbh, but returning new page objects from action methods
 
 ## Final thoughts
 
-Reliable Playwright tests are usually simpler tests.
-
-- Wait for user-visible state, not arbitrary time.
-- Use locators and web-first assertions by default.
-- Use built-in retries instead of handwritten loops.
-- Let lint rules prevent known anti-patterns.
-
-The result is faster CI, fewer flaky reruns, and easier maintenance.
+Good Playwright tests are usually the simple ones.
+Assert what users see, trust built-in waiting, and avoid custom timing hacks.
+Do that consistently, and your tests get faster, more stable, and easier to maintain. Thank you for reading, and happy testing!
