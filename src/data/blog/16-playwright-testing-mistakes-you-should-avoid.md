@@ -38,26 +38,26 @@ I keep seeing the same pattern: tests start flaking and the blame goes to data, 
 
 Let's dive into each of these anti-patterns and how to fix them.
 
-## 1. Forgetting to add assertions to tests
+## 1. Forgetting assertions in tests
 
 ```ts
 // ❌ Bad
 test('should open the page', async ({ page }) => {
-  await page.goto('https://example.com');
+  await page.goto('/dashboard');
 });
 ```
 
 ```ts
 // ✅ Better
-test('should open the page and display the example domain text', async ({ page }) => {
-  await page.goto('https://example.com');
-  await expect(page.getByText('Example Domain')).toBeVisible();
+test('should open dashboard page and verify text', async ({ page }) => {
+  await page.goto('/dashboard');
+  await expect(page.getByText('Dashboard')).toBeVisible();
 });
 ```
 
 A test without assertions is not really a test, it's just a script that performs actions without verifying any outcomes. Always make sure to include assertions in your tests to validate that the application is behaving as expected.
 
-## 2. Avoid using generic assertions such as `.toBe` instead of web-first assertions `toBeVisible`
+## 2. One-shot checks `.toBe` vs web-first assertions `.toBeVisible`, `.toHaveText`, etc.
 
 ```ts
 // ❌ Bad
@@ -77,7 +77,7 @@ await expect(page.locator('li')).toHaveCount(5);
 await expect(page.getByRole('button', { name: 'Submit' })).toBeEnabled();
 ```
 
-Web-first assertions retry until timeout. One-shot checks fail on timing jitter. If you see `isVisible`, `textContent` with pair of `toBe` assertions in your tests it's a red flag that the test might be flaky and should be refactored to use web-first assertions instead.
+Web-first assertions retry until timeout. One-shot checks pass/fail based on timing luck. If you see `isVisible`, `textContent` with pair of `toBe` assertions in your tests it's a red flag that the test might be flaky and should be refactored to use web-first assertions instead.
 
 ## 3. Avoid using hardcoded timeouts with `waitForTimeout`
 
@@ -111,7 +111,7 @@ await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
 
 `networkidle` is a brittle signal that can cause flakiness. It waits for no network connections for 500ms, which can happen too early (e.g. if the page has long-polling or WebSocket connections) or too late (e.g. if the page has a slow API call). Instead, wait for a user-visible state that indicates the page is ready, such as a heading, button, or other element that users interact with.
 
-## 5. Avoid waiting for element visibility before actions that already auto-wait
+## 5. Waiting before actions that already auto-wait
 
 ```ts
 // ❌ Bad
@@ -133,7 +133,7 @@ Almost all actions (e.g `click`, `fill`, `check` and many other) already wait fo
 ```ts
 // ❌ Bad
 await page.getByRole('button', { name: 'Delete' }).click({ force: true });
-await page.locator('.email-input').fill('exmaple@example.com', { force: true });
+await page.locator('.email-input').fill('example@example.com', { force: true });
 ```
 
 ```ts
@@ -144,7 +144,7 @@ await page.locator('.email-input').fill('example@example.com');
 
 If users cannot click it, your test should not force it either. Using `{ force: true }` can hide real issues with the page, such as elements being covered by others, not being visible, or not being enabled. If you find `{ force: true }` in your tests, check if it's really necessary or if it can be removed to make the test more reliable and closer to real user interactions.
 
-## 7. Awaiting `waitForResponse` before or after the action that triggers it
+## 7. Incorrect ordering of `waitForResponse` and the triggering action
 
 ```ts
 // ❌ Bad
@@ -195,14 +195,14 @@ while (retries > 0) {
 
 // Using `toPass`
 await expect(async () => {
-  const state = await page.getByTestId('total').textContent();
+  const state = await page.getByTestId('total').textContent({ timeout: 1_000 }); // Short timeout for the inner assertion
   const value = parseInt(state || '0', 10);
   expect(value).toBe(100);
 }).toPass({ timeout: 30_000, interval: [500, 1_000] });
 
 // Using `expect.poll`
 await expect.poll(async () => {
-  const state = await page.getByTestId('total').textContent();
+  const state = await page.getByTestId('total').textContent({ timeout: 1_000 }); // Short timeout for the inner assertion
   const value = parseInt(state || '0', 10);
 
   return value;
@@ -211,7 +211,7 @@ await expect.poll(async () => {
 
 `toPass` and `expect.poll` are safer and easier to reason about than custom retry loops. They handle timing, retries, and timeouts in a consistent way, and they integrate well with Playwright's built-in waiting mechanisms. If you see custom retry loops in your tests, consider refactoring them to use `toPass` or `expect.poll` for better reliability and readability.
 
-## 9. Forgetting short inner timeouts inside `toPass`
+## 9. Short inner timeouts inside `toPass` and `expect.poll`
 
 ```ts
 // ❌ Bad
@@ -253,18 +253,17 @@ await page.waitForURL('**/profile');
 
 `waitForNavigation` is deprecated because it can miss navigations triggered by non-click actions (e.g. `window.location` changes) and it doesn't work well with single-page applications. Use `waitForURL` or web-first assertions instead to wait for the expected state after the action.
 
-## 11. Missing adding `{ exact: true }` to locators
+## 11. Strict locators with `{ exact: true }`
 
 ```ts
 // ❌ Bad
 await page.getByRole('button', { name: 'Submit' }).click();
+await page.getByText('Submit').click();
 ```
 
 ```ts
 // ✅ Better
 await page.getByRole('button', { name: 'Submit', exact: true }).click();
-
-// or for text
 await page.getByText('Submit', { exact: true }).click();
 ```
 
