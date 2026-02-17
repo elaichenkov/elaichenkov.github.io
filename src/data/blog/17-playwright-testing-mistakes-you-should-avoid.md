@@ -313,7 +313,7 @@ await expect(page.getByRole('button', { name: 'Submit' })).not.toBeVisible();
 await expect(page.getByRole('button', { name: 'Submit' })).toBeHidden();
 ```
 
-Using `.not` can make tests less readable and can lead to confusion. If there is a positive assertion available (like `toBeHidden`), it's usually clearer to use it instead of negating a positive assertion. Note that `toBeHidden` and `not.toBeVisible` have [slightly different semantics](https://playwright.dev/docs/api/class-locatorassertions#locator-assertions-to-be-hidden) — `toBeHidden` also passes for elements that don't exist in the DOM, while `not.toBeVisible` requires the element to exist but not be visible. Pick the one that matches your intent.
+Using `.not` can make tests less readable and can lead to confusion. If there is a positive assertion available (like `toBeHidden`), it's usually clearer to use it instead of negating a positive assertion.
 
 ## 15. Ignoring `eslint-plugin-playwright`
 
